@@ -1,8 +1,6 @@
 
-direction = {
-	'NORTH': 'N',
-	'EAST': 'E',
-	'SOUTH': 'S',
-	'WEST': 'W'
-}
-
+class Direction:
+	NORTH = 'N'
+	EAST = 'E'
+	SOUTH = 'S'
+	WEST = 'W'

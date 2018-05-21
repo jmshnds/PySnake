@@ -1,6 +1,6 @@
 
+from direction import Direction
 from gameObject import gameObject
-from direction import direction
 
 class TailPiece(gameObject):
     def __init__(self, x, y):
@@ -18,14 +18,14 @@ class Snake(gameObject):
         super().__init__(x, y) # Super ctor with x y coor of the head
 
         self.tail = [TailPiece(x,y)] # Tail piece list
-        self.direction = direction['NORTH'] # Direction of the head
+        self.direction = Direction.NORTH # Direction of the head
 
     def changeDirection(self, new_dir):
         # do not allow backward direction changes
-        if self.direction is direction['NORTH'] and new_dir is direction['SOUTH'] or \
-            self.direction is direction['SOUTH'] and new_dir is direction['NORTH'] or \
-            self.direction is direction['WEST'] and new_dir is direction['EAST'] or \
-            self.direction is direction['EAST'] and new_dir is direction['WEST']:
+        if self.direction is Direction.NORTH and new_dir is Direction.SOUTH or \
+            self.direction is Direction.SOUTH and new_dir is Direction.NORTH or \
+            self.direction is Direction.WEST and new_dir is Direction.EAST or \
+            self.direction is Direction.EAST and new_dir is Direction.WEST:
             return # Do not change direction
         else:
             self.direction = new_dir
@@ -34,11 +34,11 @@ class Snake(gameObject):
         lastPos = (self.x, self.y) # Track last position of the head
 
         # Move head
-        if self.direction is direction['NORTH']:
+        if self.direction is Direction.NORTH:
             self.y -= 1
-        elif self.direction is direction['EAST']:
+        elif self.direction is Direction.EAST:
             self.x += 1
-        elif self.direction is direction['SOUTH']:
+        elif self.direction is Direction.SOUTH:
             self.y += 1
         else:
             self.x -= 1

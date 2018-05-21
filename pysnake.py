@@ -1,12 +1,12 @@
 
 import pygame
-from colors import color # color dictionary
-from snake import Snake
-from direction import direction
-from keys import keycode
-from food import Food
 from random import randint
-from enum import Enum
+
+from colors import Color
+from direction import Direction
+from food import Food
+from keys import keycode
+from snake import Snake
 
 # screen size
 WIDTH = 400
@@ -17,7 +17,7 @@ BLOCK_S = 10
 BLOCK_W = WIDTH / BLOCK_S
 BLOCK_H = HEIGHT / BLOCK_S
 
-class Game(Enum):
+class Game:
     MENU = 0
     START = 1
     PAUSE = 2
@@ -26,23 +26,21 @@ class Game(Enum):
 def process_snake_keys(snake, event):
     # Check if a key has been pressed
     if event.scancode is keycode['up']:
-        snake.changeDirection(direction['NORTH'])
+        snake.changeDirection(Direction.NORTH)
     elif event.scancode is keycode['down']:
-        snake.changeDirection(direction['SOUTH'])
+        snake.changeDirection(Direction.SOUTH)
     elif event.scancode is keycode['left']:
-        snake.changeDirection(direction['WEST'])
+        snake.changeDirection(Direction.WEST)
     elif event.scancode is keycode['right']:
-        snake.changeDirection(direction['EAST'])
+        snake.changeDirection(Direction.EAST)
 
 def process_state_keys(game_state, event):
     if event.scancode is keycode['P']:
-        print(game_state)
         return Game.PAUSE if game_state != Game.PAUSE else Game.START
     else:
         return game_state
 
 if __name__ == '__main__':
-
     pygame.init()
     draw = pygame.draw
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -55,7 +53,7 @@ if __name__ == '__main__':
     snake = Snake(int(BLOCK_W/2), int(BLOCK_H/2))
     snake.grow(5) # start snake at size 6
 
-    # place initial piece of food
+    # Place initial piece of food
     food = Food(randint(0, BLOCK_W-1), randint(0, BLOCK_H-1))
 
     while game_state is not Game.END:
@@ -66,7 +64,7 @@ if __name__ == '__main__':
                 game_state = Game.END
             elif event.type == pygame.KEYDOWN:
                 game_state = process_state_keys(game_state, event) # Process game state keys
-                
+
                 if game_state == Game.START:
                     process_snake_keys(snake, event) # Process arrow keys
                     break
@@ -75,12 +73,14 @@ if __name__ == '__main__':
             #print(event) # debug print events
 
         # Draw game objects
-        screen.fill(color['white'])
-        snake.draw(draw, screen, color['red'], (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
-        food.draw(draw, screen, color['blue'], (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
+        screen.fill(Color.WHITE)
+        snake.draw(draw, screen, Color.RED, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
+        food.draw(draw, screen, Color.BLUE, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
 
-        # Move snake and check snake conditions
-        if game_state == Game.START:
+        if game_state == Game.MENU:
+            print("Game menu")
+        elif game_state == Game.START:
+            # Move snake and check snake conditions
             snake.move()
 
             # Check if the snake has moved off screen
