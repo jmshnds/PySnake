@@ -49,6 +49,7 @@ if __name__ == '__main__':
 
     clock = pygame.time.Clock()
     game_state = Game.MENU # game starts at main menu
+    score = 0 # game score
 
     # create snake
     snake = Snake(int(BLOCK_W/2), int(BLOCK_H/2))
@@ -80,12 +81,31 @@ if __name__ == '__main__':
             #print(event) # debug print events
 
         if game_state == Game.MENU:
+            # Draw background   
             screen.fill(Color.WHITE)
+
+            # Draw title text
+            title_text = "Snake!"
+            font = pygame.font.SysFont("monospace", 36)
+            text_w, text_h = font.size(title_text)
+            label = font.render(title_text, 1, Color.BLACK)
+            screen.blit(label, ((BLOCK_S+WIDTH)/2 - text_w/2, (BLOCK_S+HEIGHT)/4 - text_h/2)) 
+
+            # Draw start button
             start_button.draw(draw, screen, Color.GREEN)
         elif game_state == Game.START:
-            # Draw game objects
+            # Draw background
             screen.fill(Color.WHITE)
+
+            # Draw score text
+            font = pygame.font.SysFont("monospace", 30)
+            text_w, text_h = font.size(str(score))
+            label = font.render(str(score), 1, Color.BLACK)
+            screen.blit(label, ((BLOCK_S+WIDTH)/2 - text_w/2, (BLOCK_S+HEIGHT)/16 - text_h/2))
+
+            # Draw snake
             snake.draw(draw, screen, Color.RED, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
+            # Draw food
             food.draw(draw, screen, Color.BLUE, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
 
             # Move snake and check snake conditions
@@ -114,6 +134,8 @@ if __name__ == '__main__':
                     # change position
                     food.x = randint(0, BLOCK_W-1)
                     food.y = randint(0, BLOCK_H-1)
+
+                    score += 1
                 else:
                     print("Game Over: poison food")
                     game_state = Game.END
