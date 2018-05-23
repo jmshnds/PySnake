@@ -2,6 +2,7 @@
 import pygame
 from random import randint
 
+from button import Button
 from colors import Color
 from direction import Direction
 from food import Food
@@ -47,7 +48,7 @@ if __name__ == '__main__':
     pygame.display.set_caption("Snake")
 
     clock = pygame.time.Clock()
-    game_state = Game.PAUSE # game starts paused
+    game_state = Game.MENU # game starts at main menu
 
     # create snake
     snake = Snake(int(BLOCK_W/2), int(BLOCK_H/2))
@@ -55,6 +56,9 @@ if __name__ == '__main__':
 
     # Place initial piece of food
     food = Food(randint(0, BLOCK_W-1), randint(0, BLOCK_H-1))
+   
+    # Initialize buttons
+    start_button = Button(BLOCK_S*BLOCK_W/2, BLOCK_S*BLOCK_H/2, BLOCK_S*6, BLOCK_S*2, "start")
 
     while game_state is not Game.END:
         for event in pygame.event.get():
@@ -64,22 +68,26 @@ if __name__ == '__main__':
                 game_state = Game.END
             elif event.type == pygame.KEYDOWN:
                 game_state = process_state_keys(game_state, event) # Process game state keys
-
                 if game_state == Game.START:
                     process_snake_keys(snake, event) # Process arrow keys
+                    break
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button.isClicked(event.pos):
+                    game_state = Game.START
                     break
 
 
             #print(event) # debug print events
 
-        # Draw game objects
-        screen.fill(Color.WHITE)
-        snake.draw(draw, screen, Color.RED, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
-        food.draw(draw, screen, Color.BLUE, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
-
         if game_state == Game.MENU:
-            print("Game menu")
+            screen.fill(Color.WHITE)
+            start_button.draw(draw, screen, Color.GREEN)
         elif game_state == Game.START:
+            # Draw game objects
+            screen.fill(Color.WHITE)
+            snake.draw(draw, screen, Color.RED, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
+            food.draw(draw, screen, Color.BLUE, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
+
             # Move snake and check snake conditions
             snake.move()
 
