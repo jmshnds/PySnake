@@ -1,6 +1,7 @@
 # User added
 *.swp
 *~
+.idea*
 
 # GitHub python .gitignore rules
 # Byte-compiled / optimized / DLL files
