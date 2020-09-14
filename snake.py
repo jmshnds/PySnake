@@ -9,7 +9,6 @@ class TailPiece(GameObject):
     def __repr__(self):
         return "TailPiece: (%d, %d)" % (self.x, self.y)
 
-    # Draw tail piece
     def draw(self, draw, screen, color, shape):
         draw.rect(screen, color, (shape[0]*self.x, shape[1]*self.y, shape[2], shape[3]))
 
@@ -45,14 +44,12 @@ class Snake(GameObject):
             self.x -= 1
 
         # Update tail piece coordinates for head
-        self.tail[0].x = self.x
-        self.tail[0].y = self.y
+        self.tail[0].x, self.tail[0].y = self.x, self.y
 
         # Then move each tail piece
         for i in range(1, len(self.tail)):
             temp_position = (self.tail[i].x, self.tail[i].y)
-            self.tail[i].x = last_position[0]
-            self.tail[i].y = last_position[1]
+            self.tail[i].x, self.tail[i].y = last_position
             last_position = temp_position
 
     def grow(self, n):

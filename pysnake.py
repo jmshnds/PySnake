@@ -10,10 +10,10 @@ from utils import Color, Direction, keycode
 WIDTH = 400
 HEIGHT = 300
 
-# size of blocks
-BLOCK_S = 10
-BLOCK_W = WIDTH // BLOCK_S
-BLOCK_H = HEIGHT // BLOCK_S
+# size of screen cells
+CELL_SIZE = 10  # cell size in pixels
+CELL_WIDTH = WIDTH // CELL_SIZE  # window width/height in cells
+CELL_HEIGHT = HEIGHT // CELL_SIZE
 
 
 class Game:
@@ -50,15 +50,15 @@ def main():
     clock = pygame.time.Clock()
     game_state = Game.MENU  # game starts at main menu
 
-    # create snake
-    snake = Snake(int(BLOCK_W/2), int(BLOCK_H/2))
-    snake.grow(5)  # start snake at size 6
+    # Create snake at the center of the window with a starting size
+    snake = Snake(x=CELL_WIDTH/2, y=CELL_HEIGHT/2)
+    snake.grow(5)
 
     # Place initial piece of food
-    food = Food(randint(0, BLOCK_W-1), randint(0, BLOCK_H-1))
+    food = Food(randint(0, CELL_WIDTH-1), randint(0, CELL_WIDTH-1))
    
     # Initialize buttons
-    start_button = Button(BLOCK_S*BLOCK_W/2, BLOCK_S*BLOCK_H/2, BLOCK_S*6, BLOCK_S*2, "start")
+    start_button = Button(CELL_SIZE*CELL_WIDTH/2, CELL_SIZE*CELL_WIDTH/2, CELL_SIZE*6, CELL_SIZE*2, "start")
 
     while game_state is not Game.END:
         for event in pygame.event.get():
@@ -85,7 +85,7 @@ def main():
             font = pygame.font.SysFont("monospace", 36)
             text_w, text_h = font.size(title_text)
             label = font.render(title_text, 1, Color.BLACK)
-            screen.blit(label, ((BLOCK_S+WIDTH)/2 - text_w/2, (BLOCK_S+HEIGHT)/4 - text_h/2)) 
+            screen.blit(label, ((CELL_SIZE+WIDTH)/2 - text_w/2, (CELL_SIZE+HEIGHT)/4 - text_h/2))
 
             # Draw start button
             start_button.draw(draw, screen, Color.GREEN)
@@ -94,22 +94,17 @@ def main():
             screen.fill(Color.WHITE)
 
             # Draw snake
-            snake.draw(draw, screen, Color.RED, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
+            snake.draw(draw, screen, Color.RED, (CELL_SIZE, CELL_SIZE, CELL_SIZE, CELL_SIZE))
             # Draw food
-            food.draw(draw, screen, Color.BLUE, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
+            food.draw(draw, screen, Color.BLUE, (CELL_SIZE, CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
             # Move snake and check snake conditions
             snake.move()
 
             # Check if the snake has moved off screen
-            if snake.x < 0:
-                snake.x = BLOCK_W
-            elif snake.x >= BLOCK_W:
-                snake.x = 0
-            if snake.y < 0:
-                snake.y = BLOCK_H
-            elif snake.y >= BLOCK_H:
-                snake.y = 0
+            if snake.x < 0 or snake.x >= CELL_WIDTH or snake.y < 0 or snake.y >= CELL_WIDTH:
+                print("Game over: off screen")
+                game_state = Game.END
 
             # Check if the snake ran into its tail
             for i in range(1, len(snake.tail)):
@@ -122,8 +117,8 @@ def main():
                 if not food.isPoison:
                     snake.grow(2)
                     # change position
-                    food.x = randint(0, BLOCK_W-1)
-                    food.y = randint(0, BLOCK_H-1)
+                    food.x = randint(0, CELL_WIDTH-1)
+                    food.y = randint(0, CELL_WIDTH-1)
                 else:
                     print("Game Over: poison food")
                     game_state = Game.END
