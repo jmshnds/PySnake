@@ -2,11 +2,9 @@ import pygame
 from random import randint
 
 from button import Button
-from colors import Color
-from direction import Direction
 from food import Food
-from keys import keycode
 from snake import Snake
+from utils import Color, Direction, keycode
 
 # screen size
 WIDTH = 400
@@ -51,7 +49,6 @@ def main():
 
     clock = pygame.time.Clock()
     game_state = Game.MENU  # game starts at main menu
-    score = 0  # game score
 
     # create snake
     snake = Snake(int(BLOCK_W/2), int(BLOCK_H/2))
@@ -96,12 +93,6 @@ def main():
             # Draw background
             screen.fill(Color.WHITE)
 
-            # Draw score text
-            font = pygame.font.SysFont("monospace", 30)
-            text_w, text_h = font.size(str(score))
-            label = font.render(str(score), 1, Color.BLACK)
-            screen.blit(label, ((BLOCK_S+WIDTH)/2 - text_w/2, (BLOCK_S+HEIGHT)/16 - text_h/2))
-
             # Draw snake
             snake.draw(draw, screen, Color.RED, (BLOCK_S, BLOCK_S, BLOCK_S, BLOCK_S))
             # Draw food
@@ -133,8 +124,6 @@ def main():
                     # change position
                     food.x = randint(0, BLOCK_W-1)
                     food.y = randint(0, BLOCK_H-1)
-
-                    score += 1
                 else:
                     print("Game Over: poison food")
                     game_state = Game.END

@@ -1,6 +1,6 @@
 import pygame
 
-from colors import Color
+from utils import Color
 from gameObject import GameObject
 
 

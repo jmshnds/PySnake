@@ -1,5 +1,5 @@
-from direction import Direction
 from gameObject import GameObject
+from utils import Direction
 
 
 class TailPiece(GameObject):
