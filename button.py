@@ -1,9 +1,10 @@
 import pygame
 
 from colors import Color
-from gameObject import gameObject
+from gameObject import GameObject
 
-class Button(gameObject):
+
+class Button(GameObject):
 	def __init__(self, x, y, width, height, text):
 		super().__init__(x, y)
 
@@ -27,14 +28,10 @@ class Button(gameObject):
 		label = font.render(self.text, 1, Color.BLACK)
 		screen.blit(label, (self.x-text_w/2, self.y-text_h/2))
 
-	def isClicked(self, coordinates):
+	def is_clicked(self, coordinates):
 		# Check if coordinates are within the button
 		x, y = coordinates
 		half_w = self.width/2
 		half_h = self.height/2
 
-		if x >= self.x - half_w and x <= self.x + half_w:
-			if y >= self.y - half_h and y <= self.y + half_h:
-				return True
-		return False
-
+		return self.x - half_w <= x <= self.x + half_w and self.y - half_h <= y <= self.y + half_h

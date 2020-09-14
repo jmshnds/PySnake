@@ -1,7 +1,7 @@
+from gameObject import GameObject
 
-from gameObject import gameObject
 
-class Food(gameObject):
+class Food(GameObject):
 	def __init__(self, x, y):
 		super().__init__(x, y)
 

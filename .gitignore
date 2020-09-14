@@ -2,6 +2,7 @@
 *.swp
 *~
 .idea*
+Pipfile*
 
 # GitHub python .gitignore rules
 # Byte-compiled / optimized / DLL files

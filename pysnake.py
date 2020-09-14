@@ -1,4 +1,3 @@
-
 import pygame
 from random import randint
 
@@ -15,8 +14,9 @@ HEIGHT = 300
 
 # size of blocks
 BLOCK_S = 10
-BLOCK_W = WIDTH / BLOCK_S
-BLOCK_H = HEIGHT / BLOCK_S
+BLOCK_W = WIDTH // BLOCK_S
+BLOCK_H = HEIGHT // BLOCK_S
+
 
 class Game:
     MENU = 0
@@ -24,16 +24,17 @@ class Game:
     PAUSE = 2
     END = 3
 
+
 def process_snake_keys(snake, event):
-    # Check if a key has been pressed
     if event.scancode is keycode['up']:
-        snake.changeDirection(Direction.NORTH)
+        snake.change_direction(Direction.NORTH)
     elif event.scancode is keycode['down']:
-        snake.changeDirection(Direction.SOUTH)
+        snake.change_direction(Direction.SOUTH)
     elif event.scancode is keycode['left']:
-        snake.changeDirection(Direction.WEST)
+        snake.change_direction(Direction.WEST)
     elif event.scancode is keycode['right']:
-        snake.changeDirection(Direction.EAST)
+        snake.change_direction(Direction.EAST)
+
 
 def process_state_keys(game_state, event):
     if event.scancode is keycode['P']:
@@ -41,19 +42,20 @@ def process_state_keys(game_state, event):
     else:
         return game_state
 
-if __name__ == '__main__':
+
+def main():
     pygame.init()
     draw = pygame.draw
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Snake")
 
     clock = pygame.time.Clock()
-    game_state = Game.MENU # game starts at main menu
-    score = 0 # game score
+    game_state = Game.MENU  # game starts at main menu
+    score = 0  # game score
 
     # create snake
     snake = Snake(int(BLOCK_W/2), int(BLOCK_H/2))
-    snake.grow(5) # start snake at size 6
+    snake.grow(5)  # start snake at size 6
 
     # Place initial piece of food
     food = Food(randint(0, BLOCK_W-1), randint(0, BLOCK_H-1))
@@ -68,17 +70,14 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 game_state = Game.END
             elif event.type == pygame.KEYDOWN:
-                game_state = process_state_keys(game_state, event) # Process game state keys
+                game_state = process_state_keys(game_state, event)  # Process game state keys
                 if game_state == Game.START:
-                    process_snake_keys(snake, event) # Process arrow keys
+                    process_snake_keys(snake, event)  # Process arrow keys
                     break
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if start_button.isClicked(event.pos):
+                if start_button.is_clicked(event.pos):
                     game_state = Game.START
                     break
-
-
-            #print(event) # debug print events
 
         if game_state == Game.MENU:
             # Draw background   
@@ -140,8 +139,11 @@ if __name__ == '__main__':
                     print("Game Over: poison food")
                     game_state = Game.END
 
-        pygame.display.update() # Update game display
-        clock.tick(12) # FPS
+        pygame.display.update()  # Update game display
+        clock.tick(12)  # FPS
 
-    pygame.quit() # Quit pygame instance
+    pygame.quit()  # Quit pygame instance
 
+
+if __name__ == '__main__':
+    main()

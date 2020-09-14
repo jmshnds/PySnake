@@ -1,8 +1,7 @@
+class GameObject:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-class gameObject:
-	def __init__(self, x, y):
-		self.x = x
-		self.y = y
-
-	def draw(self, draw, screen, color, shape):
-		pass
+    def draw(self, draw, screen, color, shape):
+        raise NotImplementedError
